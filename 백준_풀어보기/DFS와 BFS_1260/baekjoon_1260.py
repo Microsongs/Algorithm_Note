@@ -52,9 +52,6 @@ def bfs(graph, start):
             print(node, end=' ')
             visit.append(node)
             queue.extend(graph[node])
-            print("노드:",node,end= ' ')
-            print("그래프:",graph[node],end=' ')
-            print("큐:",queue)
         
 
     
