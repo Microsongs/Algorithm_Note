@@ -11,7 +11,6 @@ k = temp[1]
 # 방문 위치
 visit = [0] * 100001
 loc = n
-
 # bfs
 def bfs(visit, start):
     queue = deque()
@@ -19,7 +18,7 @@ def bfs(visit, start):
     # 같은 위치일 경우 예외처리
     if start == k:
         return visit[k]
-
+        
     while queue:
         tmp = queue.popleft()
         # +1 처리 -> tmp+1가 0이거나 tmp+1에 tmp보다 방문을 많이 하였을 떄
