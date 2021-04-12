@@ -9,12 +9,14 @@ n = temp[0]
 k = temp[1]
 
 # 방문 위치
-visit = [0] * 100001
+visit = [-1] * 100001
+# 방법 갯수
+meth = [0] * 100001
 loc = n
 
 
 # bfs
-def bfs(visit, start):
+def bfs(visit, meth, start):
     queue = deque()
     queue.append(start)
     result = 0
@@ -23,58 +25,27 @@ def bfs(visit, start):
         print(visit[k])
         print("0")
         return
+    visit[start] = 0
+    meth[start] = 1
 
     while queue:
         tmp = queue.popleft()
-        # +1 처리 -> tmp+1가 0이거나 tmp+1에 tmp보다 방문을 많이 하였을 떄
-        if tmp+1 <= 100000 and visit[tmp+1] == 0:
-            visit[tmp+1] = visit[tmp]+1
-            """
-            if k == tmp+1:
-                result+=1
-                break
-            """
-            queue.append(tmp+1)
-
-
-        # -1 처리
-        if tmp-1 >= 0 and visit[tmp-1] == 0:
-            visit[tmp-1] = visit[tmp]+1
-            """
-            if k == tmp-1:
-                result+=1
-                break
-            """
-            queue.append(tmp-1)
-
-
-        # *2 처리
-        if tmp*2 <= 100000 and visit[tmp*2] == 0:
-            visit[tmp*2] = visit[tmp]+1
-            queue.append(tmp*2)
-
-        if k == tmp*2 or k == tmp-1 or k == tmp+1:
-            result+=1
-            break
-            
-        """
-        # 찼을 경우
-        if visit[k] != 0 and (visit[k] < visit[tmp+1] or visit[k] < visit[tmp-1] or visit[k] < visit[tmp*2]):
-            break
-        """
-    # 남은 queue만 비우면서 실행
-    #print(queue)
-    while queue:
-        tmp = queue.popleft()
-        if tmp+1 <= 100000 and k == tmp+1 and visit[k] == visit[tmp]+1:
-            result += 1
-        if tmp-1 >= 0 and k == tmp-1 and visit[k] == visit[tmp]+1:
-            result += 1
-        if tmp*2 <= 100000 and k == tmp*2 and visit[k] == visit[tmp]+1:
-            result += 1
+        #print(tmp)
+        # tmp+1 tmp-1 tmp*2를 한번에 처리
+        for i in (tmp+1, tmp-1, tmp*2):
+            #범위 내에 들어갈 경우
+            if 0 <= i <= 100000:
+                # 첫 방문 시
+                if visit[i] == -1:
+                    visit[i] = visit[tmp] + 1
+                    meth[i] = meth[tmp]
+                    queue.append(i)
+                # 한번 이상 방문시
+                elif visit[i] == visit[tmp]+1:
+                    meth[i] += meth[tmp]
 
     print(visit[k])
-    print(result)
+    print(meth[k])
             
 
-bfs(visit, n)
+bfs(visit, meth, n)
